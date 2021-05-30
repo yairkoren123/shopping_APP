@@ -11,40 +11,56 @@
         android:id="@+id/wellcom_main_text"
         android:layout_width="311dp"
         android:layout_height="43dp"
+        android:layout_marginTop="192dp"
         android:gravity="center"
         android:text="Enter you name "
-        app:layout_constraintBottom_toTopOf="@+id/enter_name_text_main"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
 
-        app:layout_constraintVertical_bias="0.737" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/enter_name_text_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="380dp"
+        android:layout_marginTop="36dp"
         android:ems="10"
         android:hint="@string/enter_name_text_main"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wellcom_main_text" />
 
-<Button
-    android:id="@+id/button_main_enter"
-        android:layout_width="wrap_content"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/button_main_enter"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="continue"
-        android:background=""
-        android:textColor="#28C76F"
-
-        android:textSize="20sp"
+        android:layout_marginTop="49dp"
+        android:layout_marginBottom="268dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enter_name_text_main" />
+        app:layout_constraintTop_toBottomOf="@+id/enter_name_text_main"
+        app:layout_constraintVertical_bias="0.0"
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true"
+        android:background="@android:color/transparent"
+        app:lottie_rawRes="@raw/anim5" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--  <androidx.appcompat.widget.AppCompatButton-->
+<!--        android:id="@+id/button_main_enter"-->
+<!--        android:layout_width="187dp"-->
+<!--        android:layout_height="68dp"-->
+<!--        android:layout_marginTop="45dp"-->
+<!--        android:text="submit"-->
+<!--        android:background="#80000"-->
+<!--        android:gravity="center"-->
+
+<!--        android:textColor="@color/black"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/enter_name_text_main"/>-->

@@ -2,17 +2,23 @@ package com.example.app2;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -21,6 +27,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,16 +44,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.Inflater;
 
 public class Real_main_activity extends AppCompatActivity implements ListShoppingAdapter.OnListItemClick {
 
 
     // layout
+
+
     private Button button;
 
     private ImageButton add_button_count,odd_button_count;
 
-    private FloatingActionButton add_button_r;
+    private LottieAnimationView add_button_r;
 
     private TextView text_count_in_card;
 
@@ -106,6 +116,17 @@ public class Real_main_activity extends AppCompatActivity implements ListShoppin
             now_count_in_card++;
             text_count_in_card.setText(now_count_in_card + "");
 
+            final ViewGroup viewGroup = (ViewGroup) ((ViewGroup) this
+                    .findViewById(android.R.id.content)).getChildAt(0);
+
+            int colors[] = { 0xff255779, 0xffa6c0cd };
+
+            GradientDrawable gradientDrawable = new GradientDrawable(
+                    GradientDrawable.Orientation.TOP_BOTTOM, colors);
+
+            viewGroup.setBackgroundDrawable(gradientDrawable);
+
+
         });
 
         odd_button_count.setOnClickListener(v -> {
@@ -116,6 +137,8 @@ public class Real_main_activity extends AppCompatActivity implements ListShoppin
             text_count_in_card.setText(now_count_in_card + "");
 
         });
+
+
 
 
 
@@ -182,6 +205,7 @@ public class Real_main_activity extends AppCompatActivity implements ListShoppin
         add_button_r.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                now_count_in_card = 0;
 
                 hideKeyboard(Real_main_activity.this);
 
@@ -190,74 +214,71 @@ public class Real_main_activity extends AppCompatActivity implements ListShoppin
 
                 need_add = the_text_shopping_add_r.getText().toString().trim();
 
+                if (need_add.equals("") || need_add.equals(null) || need_add == ""){
+                    // is empty
 
-                collectionReference1.get()
-                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                            @Override
-                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                }else {
 
-                                String data = "";
-                                for (QueryDocumentSnapshot snapshots : queryDocumentSnapshots) {
-                                    Shopping shopping = snapshots.toObject(Shopping.class);
+                    collectionReference1.get()
+                            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                @Override
+                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
-                                    if (shopping.getShopNeed().equals(need_add)) {
-                                        shoppingArrayList.add(shopping);
-                                        data += "Title: " + shopping.getFirstName() + " \n"
-                                                + "Thought: " + shopping.getShopNeed() + "\n\n";
+                                    String data = "";
+                                    for (QueryDocumentSnapshot snapshots : queryDocumentSnapshots) {
+                                        Shopping shopping = snapshots.toObject(Shopping.class);
+
+                                        if (shopping.getShopNeed().equals(need_add)) {
+                                            shoppingArrayList.add(shopping);
+                                            data += "Title: " + shopping.getFirstName() + " \n"
+                                                    + "Thought: " + shopping.getShopNeed() + "\n\n";
+                                        }
                                     }
+                                    if (data == "") {
+                                        Log.d("where", "onSuccess: ");
+
+                                        Shopping shopping = new Shopping();
+                                        // set name
+                                        shopping.setFirstName(username);
+                                        // set need to add
+                                        shopping.setShopNeed(need_add);
+                                        //set time
+
+                                        //                String time_now = String.valueOf(new Timestamp(new Date()));
+                                        //                shopping.setTimeAdded(time_now);
+
+                                        shopping.setTimeAdded(new Timestamp(new Date()));
+                                        // set count
+                                        shopping.setCount(Integer.parseInt(text_count_in_card.getText().toString().trim()));
+
+
+                                        adding_to_list.put("item_here", need_add);
+                                        shopping_data_add = db.collection("shopping").document();
+                                        add_button_r.playAnimation();
+                                        shopping_data_add.set(shopping);
+                                        the_text_shopping_add_r.setText("");
+                                        text_count_in_card.setText("0");
+
+
+                                    } else {
+                                        msg("the item already on the list !!");
+                                    }
+                                    Log.d("dont", "onSuccess: " + data);
+
                                 }
-                                if (data == "") {
-                                    Log.d("where", "onSuccess: ");
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
 
-                                    Shopping shopping = new Shopping();
-                                    // set name
-                                    shopping.setFirstName(username);
-                                    // set need to add
-                                    shopping.setShopNeed(need_add);
-                                    //set time
-
-                        //                String time_now = String.valueOf(new Timestamp(new Date()));
-                        //                shopping.setTimeAdded(time_now);
-
-                                    shopping.setTimeAdded(new Timestamp(new Date()));
-                                    // set count
-                                    shopping.setCount(Integer.parseInt(text_count_in_card.getText().toString().trim()));
-
-
-                                    adding_to_list.put("item_here", need_add);
-                                    shopping_data_add = db.collection("shopping").document();
-
-                                    shopping_data_add.set(shopping);
-                                    the_text_shopping_add_r.setText("");
-                                    text_count_in_card.setText("0");
-
-
-                                } else {
-                                    msg("the item already on the list !!");
                                 }
-                                Log.d("dont", "onSuccess: " + data);
+                            });
+                    }
 
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-
-                            }
-                        });
-
-            }
+                }
         });
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-            }
-        });
-
-    }
+        }
     public ArrayList<Shopping> shoppingArrayList = new ArrayList<>();
 
     public void getThoughts_is_there(String text_search) {

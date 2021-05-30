@@ -1,19 +1,24 @@
 package com.example.app2.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.app2.R;
 import com.example.app2.Search_Sopping_Activity;
 import com.example.app2.Shopping;
@@ -30,12 +35,36 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
 public class Update_item_Fragment extends Fragment {
 
     private Timestamp time;
+
+
+    private TextView item_tv,username_tv,count_tv,time_tv;
+
+    private EditText edit_need,edit_username , edit_num;
+
+    private LottieAnimationView delete;
+
+    private LottieAnimationView save;
+    private String id;
+
+    private ArrayList<Shopping> shoppingArrayList = new ArrayList<>();
+
+
+    String the_save_need , the_save_username;
+    Editable save_count ;
+    int the_save_count;
+
+
+
+
+
+
 
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -54,22 +83,104 @@ public class Update_item_Fragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable  Bundle savedInstanceState) {
-        TextView textView = view.findViewById(R.id.textview_frag);
-        textView.setText("sdads");
 
-        super.onViewCreated(view, savedInstanceState);
-    }
+        delete = view.findViewById(R.id.deleted_button_frag);
+        save = view.findViewById(R.id.save_button_frag);
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
+        edit_need = view.findViewById(R.id.item_et_frag);
+        edit_username = view.findViewById(R.id.username_et_frag);
+        edit_num = view.findViewById(R.id.count_et_frag);
+
+        time_tv = view.findViewById(R.id.time_tv_frag);
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                delete.playAnimation();
+                // todo deleted item
+
+                DocumentReference doc = FirebaseFirestore.getInstance().collection("shopping").document(id);
+
+               doc.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                   @Override
+                   public void onSuccess(Void unused) {
+                       Log.d("del", "onSuccess: del _yes ");
+                   }
+               }).addOnFailureListener(new OnFailureListener() {
+                   @Override
+                   public void onFailure(@NonNull Exception e) {
+                       Log.d("del", "onSuccess: del_ no ");
+
+                   }
+               });
+
+            }
+        });
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                save.playAnimation();
+                if (!shoppingArrayList.equals(null)){
+                    // after search item
+                    Shopping shopping = new Shopping();
+                    shopping = shoppingArrayList.get(0);
+
+                    the_save_need =  edit_need.getText().toString().trim();
+                    the_save_username=  edit_username.getText().toString().trim();
+                    save_count = edit_num.getText();
+
+                    Log.d("savenow", "onClick: "+ save_count);
+
+
+                    String s = String.valueOf(save_count);
+                    the_save_count= Integer.parseInt(s);
+
+                    Log.d("savenow", "onClick: "+ the_save_count);
+                    // put values in the shopping class
+                    shopping.setShopNeed(the_save_need);
+                    shopping.setFirstName(the_save_username);
+                    shopping.setCount(the_save_count);
+
+
+
+                    // send the sopping class
+                    DocumentReference doc = FirebaseFirestore.getInstance().collection("shopping").document(id);
+
+                    doc.set(shopping).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Log.d("suc_save", "onSuccess: yes_save");
+                            //Intent intent = new Intent(Update_item_Fragment.this,)
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("suc", "onSuccess: no_save");
+
+                        }
+                    });
+
+                }
+
+
+
+
+
+            }
+        });
+
+
+
+
 
         Bundle arg = getArguments();
 
         String need = arg.getString("need");
         String username = arg.getString("username");
         int count = arg.getInt("count");
-        String id = arg.getString("id");
+        id = arg.getString("id");
 
 
 
@@ -81,6 +192,11 @@ public class Update_item_Fragment extends Fragment {
         shopping.setShopNeed(need);
         shopping.setFirstName(username);
         shopping.setCount(count);
+
+
+        edit_need.setText(need);
+        edit_username.setText(username);
+        edit_num.setText(String.valueOf(count));
 
 
         // set time to sopping :
@@ -104,13 +220,26 @@ public class Update_item_Fragment extends Fragment {
 
 
                             if (shopping.getShopNeed().equals(need)) {
+                                shoppingArrayList = new ArrayList<>();
+                                shoppingArrayList.add(shopping);
+
                                 Log.d("loy", "onSuccess: " + snapshots.getId());
                                 time = shopping.getTimeAdded();
+
+
+
+
                                 data += "Title: " + shopping.getFirstName() + " \n"
                                         + "Thought: " + shopping.getShopNeed() + "\n\n";
 
                                 shopping.setTimeAdded(time);
+                                String timeAgo = "";
+                                timeAgo = (String) DateUtils.getRelativeTimeSpanString(
+                                        time.getSeconds() * 1000);
+                                time_tv.setText(timeAgo);
                                 shopping.setFirstName("Hila");
+
+
 
 
                                 DocumentReference doc = FirebaseFirestore.getInstance().collection("shopping").document(id);
@@ -119,6 +248,7 @@ public class Update_item_Fragment extends Fragment {
                                     @Override
                                     public void onSuccess(Void unused) {
                                         Log.d("suc", "onSuccess: yes");
+
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
@@ -127,6 +257,7 @@ public class Update_item_Fragment extends Fragment {
 
                                     }
                                 });
+                                continue;
                             }
 
 
@@ -149,6 +280,15 @@ public class Update_item_Fragment extends Fragment {
                 });
 
         // after
+
+
+
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
     }
 

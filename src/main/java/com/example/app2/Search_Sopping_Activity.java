@@ -24,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.app2.Fragments.Update_item_Fragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -57,7 +58,9 @@ public class Search_Sopping_Activity extends AppCompatActivity {
 
 
 
-    private ImageButton search_image_shopping;
+    //private ImageButton search_image_shopping;
+
+    private LottieAnimationView search_image_shopping;
     private EditText search_shopping_et;
     private ListView listView_s;
     private CardView no_item_card;
@@ -92,21 +95,11 @@ public class Search_Sopping_Activity extends AppCompatActivity {
         no_item_card = findViewById(R.id.card_view_no_items);
         no_item_card.setVisibility(View.GONE);
         progressBar_s = findViewById(R.id.progressBar_s);
-        back_button_s = findViewById(R.id.back_button_s);
         frameLayout_frag = findViewById(R.id.mail_container);
 
         frameLayout_frag.setVisibility(View.GONE);
         progressBar_s.setVisibility(View.GONE);
 
-        back_button_s.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // back to menu
-//                Intent intent = new Intent(Search_Sopping_Activity.this, Open_Activity.class);
-//                startActivity(intent);
-//                finish();
-            }
-        });
 
         listView_s.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -125,6 +118,7 @@ public class Search_Sopping_Activity extends AppCompatActivity {
         search_image_shopping.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                search_image_shopping.playAnimation();
                 no_item_card.setVisibility(View.GONE);
                 progressBar_s.setVisibility(View.VISIBLE);
 
@@ -154,7 +148,7 @@ public class Search_Sopping_Activity extends AppCompatActivity {
     }
 
 
-    private void getThoughts(String text_search) {
+    public void getThoughts(String text_search) {
         collectionReference1.get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override

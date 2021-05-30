@@ -10,11 +10,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +56,6 @@ public class Open_Activity extends AppCompatActivity {
         ArrayList<String> welcome_list = new ArrayList<>();
         welcome_list.add("Welcome ");
         welcome_list.add("Hello , ");
-        welcome_list.add("What up , ");
 
         welcome_user_text.setText(getRandomChestItem(welcome_list) + username);
 
@@ -70,6 +71,7 @@ public class Open_Activity extends AppCompatActivity {
         for (int i = 0; i < mainGrid.getChildCount(); i++) {
             final CardView cardView = (CardView) mainGrid.getChildAt(i);
             final int finali = i;
+
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -86,21 +88,19 @@ public class Open_Activity extends AppCompatActivity {
                     }else if (finali == 2){
                         // CHANGE NAME
                         intent = new Intent(Open_Activity.this,MainActivity.class);
+                        intent.putExtra(MainActivity.ONE_MORE,"true");
 
                     }else if (finali == 3){
-                        //LOGOUT
-                        intent = new Intent(Open_Activity.this,Real_main_activity.class);
+                        //INFO
+                        intent = new Intent(Open_Activity.this, Info_Activity.class);
+                        intent.putExtra(MainActivity.EXTRA_MESSAGE,username);
+
 
                     }else {
                         intent = new Intent(Open_Activity.this,MainActivity.class);
 
                     }
                     startActivity(intent);
-
-
-
-
-
 
                 }
             });

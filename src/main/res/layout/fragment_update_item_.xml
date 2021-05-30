@@ -4,29 +4,183 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:backgroundTint="@android:color/transparent"
     tools:context=".Fragments.Update_item_Fragment">
 
     <!-- TODO: Update blank fragment layout -->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:backgroundTint="@android:color/transparent">
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="122dp"
-            android:layout_height="51dp"
-            android:text="Button"
-            tools:layout_editor_absoluteX="35dp"
-            tools:layout_editor_absoluteY="635dp" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view_frag"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="20dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:elevation="30dp"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textview_frag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            tools:layout_editor_absoluteX="176dp"
-            tools:layout_editor_absoluteY="206dp" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+
+                android:layout_height="match_parent"
+                android:background="@drawable/pic5">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="71dp"
+                    android:orientation="horizontal"
+                    android:padding="4dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:layout_editor_absoluteX="27dp">
+
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/deleted_button_frag"
+                        android:layout_width="96dp"
+                        android:layout_height="55dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_weight="1"
+                        android:background="#e3342f"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/button"
+                        app:lottie_loop="false"
+
+                        app:lottie_rawRes="@raw/anim8_delete2" />
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/save_button_frag"
+                        android:layout_width="96dp"
+                        android:layout_height="55dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_weight="1"
+                        android:background="#38c172"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/button"
+                        app:lottie_loop="false"
+
+                        app:lottie_rawRes="@raw/anim10_upload" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/amount_frag_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="60dp"
+                    android:text="amount :"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/usernaem_frag_textview" />
+
+                <TextView
+                    android:id="@+id/usernaem_frag_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="56dp"
+                    android:text="user name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.078"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/item_frag_textview" />
+
+                <TextView
+                    android:id="@+id/item_frag_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="48dp"
+                    android:text="item :"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.071"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/item_et_frag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="36dp"
+                    android:layout_marginEnd="16dp"
+                    android:ems="10"
+                    android:hint="item"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.671"
+                    app:layout_constraintStart_toEndOf="@+id/item_frag_textview"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/count_et_frag"
+
+                    android:layout_width="54dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="34dp"
+                    android:layout_marginEnd="16dp"
+                    android:hint="0-99"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.154"
+                    app:layout_constraintStart_toEndOf="@+id/amount_frag_textview"
+                    app:layout_constraintTop_toBottomOf="@+id/username_et_frag" />
+
+                <EditText
+                    android:id="@+id/username_et_frag"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginEnd="16dp"
+                    android:ems="10"
+                    android:hint="user name "
+                    android:inputType="textPersonName"
+                    android:maxLines="1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.512"
+                    app:layout_constraintStart_toEndOf="@+id/usernaem_frag_textview"
+                    app:layout_constraintTop_toBottomOf="@+id/item_et_frag" />
+
+                <TextView
+                    android:id="@+id/time_frag_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="60dp"
+                    android:text="time this item add : "
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/amount_frag_textview" />
+
+                <TextView
+                    android:id="@+id/time_tv_frag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="44dp"
+                    android:text="add"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.265"
+                    app:layout_constraintStart_toEndOf="@+id/time_frag_textview"
+                    app:layout_constraintTop_toBottomOf="@+id/count_et_frag" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

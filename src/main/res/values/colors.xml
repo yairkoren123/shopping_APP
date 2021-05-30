@@ -8,5 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="addbutton">#A32A43E3</color>
+    <color name="centerGcolor">#d76d77</color>
+    <color name="endGColor">#ffaf7b</color>
+    <color name="colorAccent">#D81B60</color>
 
 </resources>
